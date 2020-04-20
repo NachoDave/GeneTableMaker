@@ -8,6 +8,23 @@ readMACS = function(filename){
 	peaks
 }
 
+readMACS2 = function(filename){
+  #browser()
+  peaks=read.table(filename,header=T,fill=T,sep='\t')
+  
+  if ("abs_summit" %in% colnames(peaks)){
+    peaks$summit=peaks$summit+peaks$start
+    
+  } else {
+    peaks$summit=(peaks$end - peaks$start)/2 + peaks$start
+
+  }
+  peaks=peaks[,c('chr_no','start','end','length','summit','X.log10.pvalue.', 'X.log10.qvalue.', 'pileup', 'fold_enrichment')]
+  peaks$MACS_SICER='MACS2'
+  colnames(peaks)[5]=c('summit/centre') # Change column names from FDR(%) to FDR and summit to summit/centre
+  peaks  
+}
+
 readSICER = function(filename){
 	peaks=read.table(filename,fill=T)
 	colnames(peaks)=c("chrom", "start", "end", "ChIP_island_read_count", "CONTROL_island_read_count","p_value", "fold_change", "FDR","chr_no","centre") #10 columns

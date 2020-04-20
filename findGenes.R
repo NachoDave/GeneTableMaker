@@ -7,6 +7,8 @@ findGenes = function(peaksfile,programme,genefile,dist,pvalue,FDR,output){
 	#Read in peak file
 	if(programme=='MACS'){
 		peaks=readMACS(peaksfile)
+	} else if(programme == 'MACS2'){
+	  peaks=readMACS2(peaksfile)
 	} else if(programme=='SICER'){
 		peaks=readSICER(peaksfile)
 	} else{
@@ -14,7 +16,7 @@ findGenes = function(peaksfile,programme,genefile,dist,pvalue,FDR,output){
 		}
 		
 	#Remove insignificant peaks.
-	peaks=findSignificantPeaks(peaks,FDR,pvalue)
+	#peaks=findSignificantPeaks(peaks,FDR,pvalue)
 	#browser()
 	#Find gene indices
 	GeneInds=findGeneInds(peaks,genes,dist)

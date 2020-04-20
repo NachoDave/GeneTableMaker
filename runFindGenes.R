@@ -4,9 +4,13 @@ source('/data/ChIPSeqAnalysis/RScripts//geneFindR/findGeneFunctions.r')
 source('/data/ChIPSeqAnalysis/RScripts//geneFindR/reformatMACSOut.R')
 
 args <- commandArgs(trailingOnly = TRUE)
-args <- c('/data/ChIPSeqAnalysis/Experiments/WT1_300519/results/peakCalls/1_PCOS_AR_i7_filteredhg38_trim_bowtie2UPBlkLstRm_MACS_peaks.xls',
-          'MACS', '/data/ChIPSeqAnalysis/RScripts/geneTable/GeneCoordinates_ENSEMBL_Biomart150319sorted.txt',
-          '/data/ChIPSeqAnalysis/Experiments/WT1_300519/testOut2.xls')
+# args <- c('/data/ChIPSeqAnalysis/Experiments/WT1_300519/results/peakCalls/1_PCOS_AR_i7_filteredhg38_trim_bowtie2UPBlkLstRm_MACS_peaks.xls',
+#           'MACS', '/data/ChIPSeqAnalysis/RScripts/geneTable/GeneCoordinates_ENSEMBL_Biomart150319sorted.txt',
+#           '/data/ChIPSeqAnalysis/Experiments/WT1_300519/testOut2.xls')
+
+args <- c('/data/ChIPSeqAnalysis/Experiments/ChIP_BRD4_OVCAR3/results_Brd4_OVCAR3_MACS2_BROAD_NO_TRIM/peakCalls/SRR3144652_1_bowtie2UPBlkLstRm_MACS2Small_peaks.xls',
+          'MACS2', '/data/ChIPSeqAnalysis/RScripts/geneTable/GeneCoordinates_ENSEMBL_Biomart150319sorted.txt',
+                     '/data/ChIPSeqAnalysis/Experiments/ChIP_BRD4_OVCAR3/results_Brd4_OVCAR3_MACS2_BROAD_NO_TRIM/peakCalls//testGnLst.xls' )
 
 #args <- c('/home/rstudio/data2/testChr20_21PeakFile.xls',
 #          'MACS', '/home/rstudio/scripts/geneTable/GeneCoordinates_ENSEMBL_Biomart150319sorted.txt',
@@ -41,16 +45,14 @@ print(outputPath)
 print(programme)
 
 
-if (programme == 'MACS'){
+if (programme == 'MACS' | programme == 'MACS2'){
   reformatMACSOut(peaksFile)  
 }
 
 
 ## Run the gene finder
 
-
-
-if (programme == 'MACS'){
+if (programme == 'MACS' | programme == 'MACS2'){
   peaksFileMod = gsub('.xls', '_modified.xls', peaksFile)
 } else {
   peaksFileMod = peaksFile

@@ -70,11 +70,11 @@ generateGeneTable = function(peaks,genes,GeneInds,peakTable,fileName){
 	distlist=unlist(strsplit(as.character(peakTable$Dist.to.Start),split=", "))
   fileName=tail(strsplit(fileName,split='/')[[1]],n=1)
 	
-	geneTable=array(NA,dim=c(length(allGeneInds),11))
+	geneTable=array(NA,dim=c(length(allGeneInds),15))
 	geneTable=data.frame(geneTable)
   geneColNms = colnames(genes)
-	colnames(geneTable)=c(geneColNms[c(6,3,1,4,5,7,2,8)],"Peak.Pos","Dist.to.Gene.Start","Peaks")
-	#browser()
+	colnames(geneTable)=c(geneColNms[c(6,3,1,4,5,7,2,8)],"Peak.Pos","Dist.to.Gene.Start","Peaks", "Mean.Pileup", "Mean-log10(PValue)", "Max Pileup", "Max-log10(PValue)")
+#	browser()
 	for(gene in 1:length(allGeneInds)){
 	  # Chromosome
 	  if(genes$Chromosome[allGeneInds[gene]] == 998){
@@ -103,10 +103,17 @@ generateGeneTable = function(peaks,genes,GeneInds,peakTable,fileName){
 		#geneTable[gene,2]=goi
 		#geneTable[gene,c(1,3:5)]=as.character(genes[allGeneInds[gene],c(1,3:5)])
 		#geneTable[gene,6]=as.character(genes[allGeneInds[gene],6])
-		peaks=paste(paste(fileName,'_',grep(paste('(^|[ ,]+)',goi,'([ ,]|$)',sep=''),peakTable$Genes),sep=''),collapse=", ")
+	  cc <- grep(paste('(^|[ ,]+)',goi,'([ ,]|$)',sep=''),peakTable$Genes) # peak indexes
+		peaks=paste(paste(fileName,'_',cc,sep=''),collapse=", ")
 		pos=paste(poslist[which(genelist==goi)],collapse=", ")
 		dists=paste(distlist[which(genelist==goi)],collapse=", ")
-		geneTable[gene,9:11]=c(pos,dists, peaks)
+		
+		mnPileup <- mean(peakTable$pileup[cc])
+		mnp <- mean(peakTable$X.log10.pvalue.[cc])
+		maxPileUp <- max(peakTable$pileup[cc])
+		mxp <- max(peakTable$X.log10.pvalue.[cc])
+		
+		geneTable[gene,9:15]=c(pos,dists, peaks, mnPileup, mnp, maxPileUp , mxp)
 
 	}
 	
