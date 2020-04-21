@@ -4,7 +4,7 @@ readMACS = function(filename){
 	peaks$p_value=10^(-peaks$X.10.log10.pvalue./10)
 	peaks=peaks[,c('chr_no','start','end','length','summit','FDR...','p_value', 'tags', 'fold_enrichment')]
 	peaks$MACS_SICER='MACS'
-	colnames(peaks)[5:6]=c('summit/centre','FDR') # Change column names from FDR(%) to FDR and summit to summit/centre
+	colnames(peaks)[5:6, 8]=c('summit/centre','FDR', 'pileup') # Change column names from FDR(%) to FDR and summit to summit/centre
 	peaks
 }
 
@@ -13,7 +13,7 @@ readMACS2 = function(filename){
   peaks=read.table(filename,header=T,fill=T,sep='\t')
   
   if ("abs_summit" %in% colnames(peaks)){
-    peaks$summit=peaks$summit+peaks$start
+    peaks$summit=peaks$abs_summit
     
   } else {
     peaks$summit=(peaks$end - peaks$start)/2 + peaks$start
